@@ -3,20 +3,31 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
+  runApp(ByteBankApp());
+}
+
+class ByteBankApp extends StatelessWidget {
+  @override 
+  Widget build(BuildContext context){
+    return MaterialApp(
+      home: Scaffold(
+        body: FormularioTransferencia()
+      ),
+    );
+  }
+}
+
+class FormularioTransferencia extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
       appBar: AppBar(
-        title: const Text('ByteBank'),
-        backgroundColor: const Color.fromARGB(255, 66, 165, 100),
+        title: Text('Nova Transferência'),
+        backgroundColor: const Color.fromARGB(255, 66, 165, 100)
       ),
-      body: ListaTrasferencias(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Printar('mensagem'),
-        child: Icon(Icons.add),
-        backgroundColor: const Color.fromARGB(255, 66, 165, 100),
-      ),
-    ),
-  ));
+    );
+  }
 }
 
 class ListaTrasferencias extends StatelessWidget {
@@ -24,17 +35,23 @@ class ListaTrasferencias extends StatelessWidget {
   @override 
   Widget build(BuildContext context){
 
-    return Column(
+    return Scaffold(
       // ignore: prefer_const_literals_to_create_immutables
-      children: [
+      appBar: AppBar(
+        title: const Text('ByteBank'),
+        backgroundColor: const Color.fromARGB(255, 66, 165, 100),
+      ),
+      body: 
         ItemTranferencias(Transferencia(100.0, 1000)),
-        ItemTranferencias(Transferencia(250.0, 1234))
-      ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Printar('mensagem'),
+        child: Icon(Icons.add),
+        backgroundColor: const Color.fromARGB(255, 66, 165, 100),
+      ),
     );
   }
-} 
- 
-class ItemTranferencias extends StatelessWidget {
+}
+class ItemTranferencias extends StatelessWidget {  
 
   final Transferencia _transferencia;
 
