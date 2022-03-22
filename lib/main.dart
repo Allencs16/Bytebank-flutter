@@ -26,6 +26,28 @@ class FormularioTransferencia extends StatelessWidget {
         title: Text('Nova Transferência'),
         backgroundColor: const Color.fromARGB(255, 66, 165, 100)
       ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              style: TextStyle(
+                fontSize: 24.0
+              ),
+              decoration: InputDecoration(
+                labelText: 'Número da conta',
+                hintText: '0000'
+              ),
+              keyboardType: TextInputType.number,
+            ),
+          ),
+          TextField(),
+          ElevatedButton(
+            onPressed: () => Printar('mensagem'), 
+            child: const Text('Adicionar')
+          )
+        ],
+      ),
     );
   }
 }
