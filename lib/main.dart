@@ -32,7 +32,7 @@ class FormularioTransferencia extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               style: TextStyle(
-                fontSize: 24.0
+                fontSize: 16.0
               ),
               decoration: InputDecoration(
                 labelText: 'Número da conta',
@@ -41,9 +41,22 @@ class FormularioTransferencia extends StatelessWidget {
               keyboardType: TextInputType.number,
             ),
           ),
-          TextField(),
+          TextField(
+            style: TextStyle(
+              fontSize: 16.0
+            ),
+              decoration: InputDecoration(
+                icon: Icon(Icons.monetization_on),
+                labelText: 'Valor',
+                hintText: '000.0'
+              ),
+              keyboardType: TextInputType.number,
+            ),
           ElevatedButton(
-            onPressed: () => Printar('mensagem'), 
+            style: ElevatedButton.styleFrom(
+              primary: Color.fromARGB(255, 66, 165, 100)
+            ),
+            onPressed: () => print('mensagem'), 
             child: const Text('Adicionar')
           )
         ],
@@ -66,7 +79,7 @@ class ListaTrasferencias extends StatelessWidget {
       body: 
         ItemTranferencias(Transferencia(100.0, 1000)),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Printar('mensagem'),
+        onPressed: () => print('mensagem'),
         child: Icon(Icons.add),
         backgroundColor: const Color.fromARGB(255, 66, 165, 100),
       ),
@@ -98,10 +111,4 @@ class Transferencia {
   final int _numeroConta;
 
   Transferencia(this._valor, this._numeroConta);
-}
-
-class Printar {
-  final String mensagem;
-
-  Printar(this.mensagem);
 }
