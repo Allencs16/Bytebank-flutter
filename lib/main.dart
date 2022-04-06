@@ -3,21 +3,31 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(ByteBankApp());
+  runApp(
+    ByteBankApp()
+  );
 }
 
 class ByteBankApp extends StatelessWidget {
   @override 
   Widget build(BuildContext context){
     return MaterialApp(
-      home: Scaffold(
-        body: ListaTrasferencias()
+      theme: ThemeData(
+        primaryColor: Colors.green[900]
       ),
+      home: ListaTrasferencias()
     );
   }
 }
 
-class FormularioTransferencia extends StatelessWidget {
+class FormularioTransferencia extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return FormularioTransferenciaState();
+  }
+}
+
+class FormularioTransferenciaState extends State<FormularioTransferencia> {
 
   final TextEditingController _controladorNumConta = TextEditingController();
   final TextEditingController _controladorValor = TextEditingController();
@@ -29,20 +39,22 @@ class FormularioTransferencia extends StatelessWidget {
         title: Text('Nova Transferência'),
         backgroundColor: const Color.fromARGB(255, 66, 165, 100)
       ),
-      body: Column(
-        children: [
-          Editor(controller: _controladorNumConta, labelText: 'Número da conta', hintText: '1000', icon: null),
-          Editor(controller: _controladorValor, labelText: 'Valor', hintText: '100.0', icon: Icons.monetization_on),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Color.fromARGB(255, 66, 165, 100)
-            ),
-            onPressed: () {
-              _criaTransferencia(context);
-            }, 
-            child: const Text('Adicionar')
-          )
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Editor(controller: _controladorNumConta, labelText: 'Número da conta', hintText: '1000', icon: null),
+            Editor(controller: _controladorValor, labelText: 'Valor', hintText: '100.0', icon: Icons.monetization_on),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color.fromARGB(255, 66, 165, 100)
+              ),
+              onPressed: () {
+                _criaTransferencia(context);
+              }, 
+              child: const Text('Adicionar')
+            )
+          ],
+        ),
       ),
     );
   }
@@ -99,31 +111,36 @@ class ListaTrasferencias extends StatefulWidget {
 }
 
 class ListaTrasferenciasState extends State<ListaTrasferencias>{
+
   @override
   Widget build(BuildContext context) {
-    widget._transferencias.add(Transferencia(200, 20));
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('ByteBank'),
-        backgroundColor: const Color.fromARGB(255, 66, 165, 100),
+        backgroundColor: Colors.green[900],
       ),
       body: ListView.builder(
         itemCount: widget._transferencias.length,
         itemBuilder: (context, indice){
-          final transferencia = widget._transferencias[indice];
+          var transferencia = widget._transferencias[indice];
           return ItemTranferencias(transferencia);
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          final Future future = Navigator.push(context, MaterialPageRoute(builder: (context){
+          Future future = Navigator.push(context, MaterialPageRoute(builder: (context){
             return FormularioTransferencia();
           }));
 
           future.then((transferenciaRecebida){
-            debugPrint('$transferenciaRecebida');
-            widget._transferencias.add(transferenciaRecebida); 
+            debugPrint('Transferencia: $transferenciaRecebida');
+            if(transferenciaRecebida != null){
+              //setState rodar novamente o build do widget fazendo com que valores dinamicos mudem
+              setState(() {
+                widget._transferencias.add(transferenciaRecebida);
+              });
+            }
           });
         },
         child: Icon(Icons.add),
@@ -142,12 +159,15 @@ class ItemTranferencias extends StatelessWidget {
   @override
   Widget build(BuildContext context){
 
+
+  final String valor = _transferencia._valor.toString();
+
     return 
       Card(
         child: ListTile(
           leading: Icon(Icons.monetization_on),
-          title: Text(this._transferencia._valor.toString()),
-          subtitle: Text(this._transferencia._numeroConta.toString()),
+          title: Text('Valor: $valor'),
+          subtitle: Text(_transferencia._numeroConta.toString()),
         ),
       );
   }
@@ -161,6 +181,6 @@ class Transferencia {
 
   @override
   String toString(){
-    return 'Transferencia($_numeroConta, $_valor)';
+    return 'Transferencia($_valor, $_numeroConta)';
   }
 }
